@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace shurl
 {
-    public partial class Form1 : Form
+    public partial class Webpage : Form
     {
-        public Form1()
+        public Webpage(string address)
         {
             InitializeComponent();
         }
