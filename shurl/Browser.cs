@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,15 +20,11 @@ namespace shurl
 
         private void GoTo_btn_Click(object sender, EventArgs e)
         {
-            Webpage page = new Webpage(Address_txt.Text);
+            Webpage page = new Webpage(Address_txt.Text.ToLower());
             DialogResult res = page.ShowDialog();
             if (res == DialogResult.No)
             {
-                MessageBox.Show("Error: Address is not valid.");
-            }
-            else if (res == DialogResult.Abort)
-            {
-                MessageBox.Show("Error: Link not found.");
+                MessageBox.Show(page.Error);    // Fetch Error message from Webpage and display to user
             }
             // else OK, no action required
         }

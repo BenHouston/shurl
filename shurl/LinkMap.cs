@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +36,22 @@ namespace shurl
             return "Not yet implemented...";
         }
 
-
+        public static string SanityCheck(string addr)
+        {
+            WebRequest req = WebRequest.Create(addr);
+            try
+            {
+                req.GetResponse();
+                if (addr.Contains("www.shurl.com"))
+                {
+                    return "OK";
+                }
+                else return "This browser only supports www.shurl.com";
+            }
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+        }
     }
 }
