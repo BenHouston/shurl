@@ -63,6 +63,7 @@
             // 
             // Quit_btn
             // 
+            this.Quit_btn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Quit_btn.Location = new System.Drawing.Point(562, 51);
             this.Quit_btn.Name = "Quit_btn";
             this.Quit_btn.Size = new System.Drawing.Size(226, 44);
@@ -73,8 +74,10 @@
             // 
             // Browser
             // 
+            this.AcceptButton = this.GoTo_btn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.Quit_btn;
             this.ClientSize = new System.Drawing.Size(800, 104);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Address_txt);

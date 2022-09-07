@@ -52,6 +52,7 @@
     <Compile Include="Browser.Designer.cs">
       <DependentUpon>Browser.cs</DependentUpon>
     </Compile>
+    <Compile Include="LinkMap.cs" />
     <Compile Include="Webpage.cs">
       <SubType>Form</SubType>
     </Compile>

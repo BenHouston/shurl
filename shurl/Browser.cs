@@ -20,6 +20,16 @@ namespace shurl
         private void GoTo_btn_Click(object sender, EventArgs e)
         {
             Webpage page = new Webpage(Address_txt.Text);
+            DialogResult res = page.ShowDialog();
+            if (res == DialogResult.No)
+            {
+                MessageBox.Show("Error: Address is not valid.");
+            }
+            else if (res == DialogResult.Abort)
+            {
+                MessageBox.Show("Error: Link not found.");
+            }
+            // else OK, no action required
         }
 
         private void Quit_btn_Click(object sender, EventArgs e)
