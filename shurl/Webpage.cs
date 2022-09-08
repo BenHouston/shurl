@@ -30,18 +30,18 @@ namespace shurl
         public Webpage(string address)
         {
             InitializeComponent();
-            Address = address;
+            Address = address;  // Stores adress as a global so that Webpage_Load can use it
         }
 
         private void Webpage_Load(object sender, EventArgs e)
         {
-            // Error checking...
+            // If a shortlink was used...
             string regEx = @"^shurl.com/.+";
             if (Regex.IsMatch(Address, regEx))
             {
                 string code = Address.Split('/')[1];
                 string link = LinkMap.GetLongLink(code);
-                if (link == "na")
+                if (link == "na")   // GetLongLink will return "na" when code is not found in table
                 {
                     Error = "Error: Link not found";
                     DialogResult = DialogResult.No;
@@ -50,11 +50,12 @@ namespace shurl
                 }
                 else
                 {
-                    System.Diagnostics.Process.Start(link);
+                    System.Diagnostics.Process.Start(link); // Opens Web address in default browser
                     Close();
                     return;
                 }
             }
+            // If web address does not match our website...
             regEx = @"^(https://)?(www.)?shurl.com/?$";
             if (!Regex.IsMatch(Address, regEx))
             {
@@ -67,15 +68,16 @@ namespace shurl
 
         private void Convert_btn_Click(object sender, EventArgs e)
         {
-            string shortaddr = LinkMap.GetShortLink(LongLink_txt.Text);
-            // ToDo sanity checks...
+            string shortaddr = LinkMap.GetShortLink(LongLink_txt.Text); 
+            // Currently no error checking in conversion. It will save any link in the table and return a corresponding code
             ShortLink_txt.Text = "shurl.com/" + shortaddr;
         }
 
         private void Copy_btn_Click(object sender, EventArgs e)
         {
-            ShortLink_txt.SelectAll();
+            // Just a little added convenience for the user
             Clipboard.SetText(ShortLink_txt.Text);
+            ShortLink_txt.SelectAll();
         }
     }
 }

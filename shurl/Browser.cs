@@ -16,12 +16,13 @@ namespace shurl
         public Browser()
         {
             InitializeComponent();
-            LinkMap.InitialiseTable();
+            LinkMap.InitialiseTable();  // Initialises the Datatable on startup
         }
 
         private void GoTo_btn_Click(object sender, EventArgs e)
         {
-            Webpage page = new Webpage(Address_txt.Text.ToLower());
+            // Opens the 'Webpage' sending the web address as a string
+            Webpage page = new Webpage(Address_txt.Text.ToLower());  // ToLower() to simplify any input validation on the other end
             DialogResult res = page.ShowDialog();
             if (res == DialogResult.No)
             {
