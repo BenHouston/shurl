@@ -16,6 +16,7 @@ namespace shurl
         public Browser()
         {
             InitializeComponent();
+            LinkMap.InitialiseTable();
         }
 
         private void GoTo_btn_Click(object sender, EventArgs e)

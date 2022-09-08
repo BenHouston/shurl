@@ -20,37 +20,38 @@ namespace shurl
                 SQLTable.Columns.Add("LinkID", typeof(int));
                 SQLTable.Columns.Add("LongLink", typeof(string));
                 SQLTable.Columns.Add("ShortLink", typeof(string));
-                SQLTable.Columns.Add("UseCount", typeof(int));
+                SQLTable.Columns.Add("Cookie", typeof(string));
             }
         }
 
         public static string GetLongLink(string shortlink)
         {
-            //ToDo...
-            return "Not yet implemented...";
+            DataRow[] rows = SQLTable.Select("ShortLink = '" + shortlink + "'");
+            if (rows.Length > 0)
+            {
+                return rows[0].Field<string>("LongLink");
+            }
+            else return "na";
         }
 
         public static string GetShortLink(string longlink)
         {
-            //ToDo...
-            return "Not yet implemented...";
-        }
-
-        public static string SanityCheck(string addr)
-        {
-            WebRequest req = WebRequest.Create(addr);
-            try
+            DataRow[] rows = SQLTable.Select("LongLink = '" + longlink + "'");
+            if (rows.Length > 0)
             {
-                req.GetResponse();
-                if (addr.Contains("www.shurl.com"))
-                {
-                    return "OK";
-                }
-                else return "This browser only supports www.shurl.com";
+                return rows[0].Field<string>("ShortLink");  // Link has already been generated
             }
-            catch (Exception ex)
+            else  // Generate new link
             {
-                return "Error: " + ex.Message;
+                int value = SQLTable.Rows.Count;
+                string code = Convert.ToString(value, 16).PadLeft(4,'0');
+                DataRow newrow = SQLTable.NewRow();
+                newrow.SetField("LinkID", value);
+                newrow.SetField("LongLink", longlink);
+                newrow.SetField("ShortLink", code);
+                newrow.SetField("Cookie", "Not implemented");
+                SQLTable.Rows.Add(newrow);
+                return code;
             }
         }
     }

@@ -77,6 +77,7 @@
             this.Copy_btn.TabIndex = 2;
             this.Copy_btn.Text = "Copy to Clipboard";
             this.Copy_btn.UseVisualStyleBackColor = true;
+            this.Copy_btn.Click += new System.EventHandler(this.Copy_btn_Click);
             // 
             // Return_btn
             // 

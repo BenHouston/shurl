@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Net;
 
 namespace shurl
 {
@@ -24,30 +25,38 @@ namespace shurl
         //    'U', 'V', 'W', 'X', 'Y', 'Z', '-', '+'};
 
         public string Error = "";
+        private string Address;
 
         public Webpage(string address)
         {
             InitializeComponent();
+            Address = address;
+        }
+
+        private void Webpage_Load(object sender, EventArgs e)
+        {
             // Error checking...
-            Error = LinkMap.SanityCheck(address);
-            if (Error != "OK")
+            string regEx = @"^shurl.com/.+";
+            if (Regex.IsMatch(Address, regEx))
             {
-                DialogResult = DialogResult.No;
-                Close();
-            }
-            string regEx = @"^(htps://)?(www.)?shurl.com/.+";
-            if (Regex.IsMatch(address,regEx))
-            {
-                string code = address.Split('/')[1];
-                Error = LinkMap.GetLongLink(code);
-                if (Error != "OK")
+                string code = Address.Split('/')[1];
+                string link = LinkMap.GetLongLink(code);
+                if (link == "na")
                 {
+                    Error = "Error: Link not found";
                     DialogResult = DialogResult.No;
                     Close();
+                    return;
+                }
+                else
+                {
+                    System.Diagnostics.Process.Start(link);
+                    Close();
+                    return;
                 }
             }
-            regEx = @"^(htps://)?(www.)?shurl.com/?$";
-            if (!Regex.IsMatch(address, regEx))
+            regEx = @"^(https://)?(www.)?shurl.com/?$";
+            if (!Regex.IsMatch(Address, regEx))
             {
                 Error = "This 'browser' can only display the shurl.com website";
                 DialogResult = DialogResult.No;
@@ -56,16 +65,17 @@ namespace shurl
             // else the address was shurl.com and no action is needed, so proceed to display window
         }
 
-        private void Webpage_Load(object sender, EventArgs e)
-        {
-            LinkMap.InitialiseTable();
-        }
-
         private void Convert_btn_Click(object sender, EventArgs e)
         {
             string shortaddr = LinkMap.GetShortLink(LongLink_txt.Text);
             // ToDo sanity checks...
-            ShortLink_txt.Text = shortaddr;
+            ShortLink_txt.Text = "shurl.com/" + shortaddr;
+        }
+
+        private void Copy_btn_Click(object sender, EventArgs e)
+        {
+            ShortLink_txt.SelectAll();
+            Clipboard.SetText(ShortLink_txt.Text);
         }
     }
 }
